@@ -115,8 +115,8 @@
                     classCache = null;
 
                 function isAfter(x, y) {
-                    //check if below or over the diagonal of the box element
-                    return (element[0].offsetHeight - x * element[0].offsetHeight / element[0].offsetWidth) < y;
+                    //check if below or over half height of the box element
+                    return (element[0].offsetHeight / 2) < y;
                 }
 
                 function resetStyle() {
