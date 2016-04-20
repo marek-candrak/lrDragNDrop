@@ -146,7 +146,9 @@
                         if (collectionCopy.length > collection.length) {
                             for (i = 0, l = Math.min(dropIndex, collection.length - 1); i <= l; i++) {
                                 if (!ng.equals(collectionCopy[i], collection[i])) {
-                                    dropIndex = dropIndex - 1;
+                                    if (dropIndex > 0) {
+                                        dropIndex = dropIndex - 1;
+                                    }
                                     break;
                                 }
                             }
