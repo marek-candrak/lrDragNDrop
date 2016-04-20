@@ -125,6 +125,14 @@
                         classCache = null;
                     }
                 }
+                
+                function getCoordinates(evt) {
+                    var coordinates = {
+                        offsetX: evt.offsetX || evt.originalEvent.offsetX,
+                        offsetY: evt.offsetY || evt.originalEvent.offsetY,
+                    }
+                    return coordinates;
+                }
 
                 if(attr.lrDragData) {
                     scope.$watch(attr.lrDragData, function (newValue) {
@@ -141,7 +149,8 @@
                         dropIndex, i, l;
                     if (item !== null) {
                         dropIndex = scope.$index;
-                        dropIndex = isAfter(evt.offsetX, evt.offsetY) ? dropIndex + 1 : dropIndex;
+                        var coordinates = getCoordinates(evt);
+                        dropIndex = isAfter(coordinates.offsetX, coordinates.offsetY) ? dropIndex + 1 : dropIndex;
                         //srcCollection=targetCollection => we may need to apply a correction
                         if (collectionCopy.length > collection.length) {
                             for (i = 0, l = Math.min(dropIndex, collection.length - 1); i <= l; i++) {
@@ -169,7 +178,8 @@
                 element.bind('dragover', function (evt) {
                     var className;
                     if (store.isHolding(key)) {
-                        className = isAfter(evt.offsetX, evt.offsetY) ? 'lr-drop-target-after' : 'lr-drop-target-before';
+                        var coordinates = getCoordinates(evt);
+                        className = isAfter(coordinates.offsetX, coordinates.offsetY) ? 'lr-drop-target-after' : 'lr-drop-target-before';
                         if (classCache !== className && classCache !== null) {
                             element.removeClass(classCache);
                         }
