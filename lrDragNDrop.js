@@ -72,7 +72,8 @@
                 return function linkFunc(scope, element, attr) {
                     var
                         collection,
-                        key = (safe === true ? attr.lrDragSrcSafe : attr.lrDragSrc ) || 'temp';
+                        key = (safe === true ? attr.lrDragSrcSafe : attr.lrDragSrc) || 'temp',
+                        highlightItemClass = attr.lrHighlightClass;
 
                     if(attr.lrDragData) {
                         scope.$watch(attr.lrDragData, function (newValue) {
@@ -83,6 +84,9 @@
                     }
 
                     element.bind('dragstart', function (evt) {
+                        if (highlightItemClass) {
+                            element.addClass(highlightItemClass);
+                        }
                         store.hold(key, collection[scope.$index], collection, safe);
                         if(angular.isDefined(evt.dataTransfer)) {
                             evt.dataTransfer.setData('text/html', null); //FF/jQuery fix
@@ -112,7 +116,8 @@
                 var
                     collection,
                     key = attr.lrDropTarget || 'temp',
-                    classCache = null;
+                    classCache = null,
+                    highlightItemClass = attr.lrHighlightClass;
 
                 function isAfter(x, y) {
                     //check if below or over half height of the box element
@@ -126,6 +131,15 @@
                     }
                 }
                 
+                function resetHighlightItem() {
+                    // droped element is element sibling
+                    // if that element has been highlighted, remove highlighting
+                    if (highlightItemClass) {
+                        element.prev().removeClass(highlightItemClass);
+                        element.next().removeClass(highlightItemClass);
+                    }
+                }
+
                 function getCoordinates(evt) {
                     var coordinates = {
                         offsetX: evt.offsetX || evt.originalEvent.offsetX,
@@ -169,6 +183,7 @@
                         });
                         evt.preventDefault();
                         resetStyle();
+                        resetHighlightItem();
                         store.clean();
                     }
                 });
