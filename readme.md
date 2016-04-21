@@ -63,6 +63,15 @@ Note a target can be its own source (if you want to use drag and drop to reorder
 ```
 Registers custom callback function that will be called after item will be dropped. Has to be used with lr-drop-target toghether.
 
+### Highlight element which is dragged
+
+```html
+<ul>
+    <li ng-repeat="item in targetCollection" lr-highlight-class="highlight-dragged-item">{{item}}</li>
+</ul>
+```
+An Element which is dragged will be extended with a class ``highlight-dragged-item``. The Class will be set on "dragstart" event and removed on "drop" event.
+
 ## Adorners
 
 When a source item is dragged over a target element and if they share the same namespace a class name is added to the target element following this rule:
